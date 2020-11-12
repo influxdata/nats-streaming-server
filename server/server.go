@@ -1490,6 +1490,10 @@ func RunServerWithOpts(stanOpts *Options, natsOpts *server.Options) (newServer *
 		if err := s.startNATSServer(); err != nil {
 			return nil, err
 		}
+		// NOTE(sgc): copied from https://github.com/influxdata/nats-streaming-server/commit/b9bd90b67451003a25b814c54c933f1d9eab7163
+		if natsOpts != nil && natsOpts.Port == server.RANDOM_PORT {
+			natsOpts.Port = nOpts.Port
+		}
 	}
 	// Check for monitoring
 	if nOpts.HTTPPort != 0 || nOpts.HTTPSPort != 0 {
